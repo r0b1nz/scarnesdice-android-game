@@ -42,8 +42,11 @@ public class MainActivity extends AppCompatActivity {
             int diceNum = 1 + random.nextInt(6);
             imageView.setImageDrawable(getDrawable(diceImage[diceNum - 1]));
             if (diceNum == 1) {
+                compTurnScore = 0;
                 refreshScores();
                 updateUI();
+                roll.setEnabled(true);
+                hold.setEnabled(true);
                 return;
             } else {
                 compTurnScore += diceNum;
@@ -54,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     write("Your turn now!");
                     refreshScores();
+                    roll.setEnabled(true);
+                    hold.setEnabled(true);
                     updateUI();
                 }
             }
@@ -72,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         roll = (Button) findViewById(R.id.button);
         hold = (Button) findViewById(R.id.button2);
         reset = (Button) findViewById(R.id.button3);
-
     }
 
     public void roll(View view) {
@@ -90,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void hold(View view) {
         userOverallScore += userTurnScore;
-        if (updateUI() == 0) {
+        if (updateUI() == 0) { // updateUI() will return 0 if no one has cleared the winning threshold
             userTurnScore = 0;
             compTurnScore = 0;
             write("Computer's turn now");
@@ -142,7 +146,5 @@ public class MainActivity extends AppCompatActivity {
         computerTurns = 0;
         turnHandler.postDelayed(playTurn, 500);
         updateUI();
-        roll.setEnabled(true);
-        hold.setEnabled(true);
     }
 }
